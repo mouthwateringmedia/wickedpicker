@@ -66,7 +66,7 @@
         this.secondsElem = $('.wickedpicker__controls__control--seconds');
         this.meridiemElem = $('.wickedpicker__controls__control--meridiem');
         this.close = $('.' + this.options.close);
-        this.clear = $('.' + this.options.clear);
+        this.clear = this.timepicker.find('.' + this.options.clear);
 
         //Create a new Date object based on the default or passing in now value
         var time = this.timeArrayFromString(this.options.now);
@@ -197,9 +197,6 @@
                 //Clicking the X
                 if ($(event.target).is(self.close)) {
                     self.hideTimepicker(element);
-                } else if ($(event.target).is(self.clear)) {
-                    self.hideTimepicker(element);
-                    self.element.val('');
                 } else if ($(event.target).closest(self.timepicker).length || $(event.target).closest($('.hasWickedpicker')).length) { //Clicking the  Wickedpicker or one of it's inputs
                     event.stopPropagation();
                 } else {   //Everything else
@@ -433,6 +430,12 @@
                 }
             }).bind('mouseup touchend', function () {
                 clearInterval(timeOut);
+            });
+
+            var self = this;
+            this.clear.off('click').on('click', function(e) {
+                self.hideTimepicker(element);
+                self.element.val('');
             });
         },
 
